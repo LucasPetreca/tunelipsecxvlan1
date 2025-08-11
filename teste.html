@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Solução de Acesso de Baixo Custo para Proteção de Sites Lineares</title>
+    <title>Transmissão de Baixo Custo para Sites Lineares</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
@@ -12,10 +12,12 @@
             font-family: 'Inter', sans-serif;
             background-color: #0d0d0d;
             color: #e0e0e0;
+            overflow-x: hidden;
         }
         .network-container {
             position: relative;
             width: 100%;
+            touch-action: none;
         }
         canvas {
             display: block;
@@ -33,6 +35,7 @@
             align-items: center;
             transition: transform 0.3s ease-in-out;
             cursor: pointer;
+            text-align: center;
         }
         .device-icon-container:hover {
             transform: translate(-50%, -50%) scale(1.1);
@@ -50,7 +53,7 @@
         .sub-device-label {
             white-space: pre-wrap;
             text-align: center;
-            font-size: 0.65rem;
+            font-size: 0.7rem;
             line-height: 0.9rem;
             font-weight: 400;
             color: #b0b0b0;
@@ -68,13 +71,14 @@
             justify-content: center;
             backdrop-filter: blur(8px);
             animation: fadeIn 0.3s ease-out;
+            padding: 1rem;
         }
         .modal-content {
             background-color: #1e1e1e;
-            padding: 2.5rem;
+            padding: 1.5rem;
             border-radius: 1.5rem;
-            max-width: 90%;
-            max-height: 90%;
+            max-width: 95%;
+            max-height: 95%;
             overflow-y: auto;
             position: relative;
             color: #e0e0e0;
@@ -84,8 +88,8 @@
         }
         .close-btn {
             position: absolute;
-            top: 1.5rem;
-            right: 1.5rem;
+            top: 1rem;
+            right: 1rem;
             font-size: 1.8rem;
             cursor: pointer;
             color: #e0e0e0;
@@ -125,21 +129,13 @@
             box-shadow: none;
             transform: none;
         }
-
         .fade-in-up {
             animation: fadeInUp 0.8s ease-out forwards;
             opacity: 0;
         }
-
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -154,9 +150,7 @@
             70% { box-shadow: 0 0 0 15px rgba(255, 255, 255, 0); }
             100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
         }
-        .icon-pulse {
-            animation: pulse 2s infinite;
-        }
+        .icon-pulse { animation: pulse 2s infinite; }
         .device-icon-wrapper {
             background-color: #2a2a2a;
             padding: 1rem;
@@ -168,56 +162,62 @@
 </head>
 <body class="p-4 md:p-8 flex flex-col items-center justify-center min-h-screen">
 
-    <div class="max-w-4xl w-full bg-[#1e1e1e] p-6 md:p-8 rounded-xl shadow-2xl border border-gray-700 fade-in-up">
-        <h1 class="text-xl md:text-2xl font-bold text-center text-white mb-6">Solução de Acesso de Baixo Custo para Proteção de Sites Lineares</h1>
+    <div class="w-full bg-[#1e1e1e] p-6 md:p-8 rounded-xl shadow-2xl border border-gray-700 fade-in-up">
+        <h1 class="text-xl md:text-2xl font-bold text-center text-white mb-6">TRANSMISSÃO DE BAIXO CUSTO PARA SITES LINEARES</h1>
         <div class="flex flex-col items-center justify-center w-full">
             <div class="network-container">
                 <canvas id="networkCanvas" class="w-full h-auto max-h-[60vh] md:max-h-[70vh]"></canvas>
             </div>
             
-            <div id="status-message" class="text-center text-lg font-medium mt-4 h-8 text-white">Aguardando...</div>
+            <div id="status-message" class="text-center text-sm md:text-lg font-medium mt-4 h-8 text-white">Aguardando...</div>
             <div id="loading-indicator" class="hidden text-center mt-4 flex items-center justify-center text-purple-400">
                 <i class="fas fa-spinner fa-spin mr-2"></i>Gerando análise...
             </div>
 
             <div class="mt-8 flex flex-col md:flex-row gap-4 w-full justify-center">
-                <button id="breakLink2Btn" class="button-gradient-red text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:scale-105 disabled:button-disabled disabled:hover:scale-100">
-                    <i class="fas fa-exclamation-triangle mr-2"></i>Simular Falha entre SIABBR1 e SIABB01
+                <button id="breakLink2Btn" class="button-gradient-red text-white font-bold py-3 px-4 md:px-6 rounded-lg shadow-lg hover:scale-105 disabled:button-disabled disabled:hover:scale-100 text-sm md:text-base">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>Falha entre SIABBR1 e SIABB01
                 </button>
-                <button id="breakLink1Btn" class="button-gradient-red text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:scale-105 disabled:button-disabled disabled:hover:scale-100">
-                    <i class="fas fa-exclamation-triangle mr-2"></i>Simular Falha entre SIIRS01 e SIABBR1
-                </button>
-                <button id="resetBtn" class="button-gradient-blue text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:scale-105">
-                    <i class="fas fa-sync-alt mr-2"></i>Reiniciar Simulação
+                <button id="breakLink1Btn" class="button-gradient-red text-white font-bold py-3 px-4 md:px-6 rounded-lg shadow-lg hover:scale-105 disabled:button-disabled disabled:hover:scale-100 text-sm md:text-base">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>Falha entre SIIRS01 e SIABBR1
                 </button>
             </div>
             <div class="mt-4 flex flex-col md:flex-row gap-4 w-full justify-center">
-                <button id="geminiAnalyzeBtn" class="button-gradient-purple text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:scale-105 disabled:button-disabled disabled:hover:scale-100">
+                <button id="resetBtn" class="button-gradient-blue text-white font-bold py-3 px-4 md:px-6 rounded-lg shadow-lg hover:scale-105 text-sm md:text-base">
+                    <i class="fas fa-sync-alt mr-2"></i>Reiniciar Simulação
+                </button>
+                <button id="geminiAnalyzeBtn" class="button-gradient-purple text-white font-bold py-3 px-4 md:px-6 rounded-lg shadow-lg hover:scale-105 disabled:button-disabled disabled:hover:scale-100 text-sm md:text-base">
                     <i class="fas fa-gem mr-2"></i>Análise Gemini ✨
                 </button>
             </div>
         </div>
 
-        <!-- Nova caixa retangular na parte inferior com as conexões locais de múltiplos sites -->
-        <div class="mt-8 bg-[#282828] p-6 rounded-xl shadow-md border border-gray-600 fade-in-up" style="animation-delay: 0.2s;">
-            <h2 class="text-lg font-semibold text-white mb-4 text-center">Conexões Locais de Sites</h2>
-            <div class="flex flex-wrap justify-center gap-6">
+        <div class="mt-8 bg-[#282828] p-4 md:p-6 rounded-xl shadow-md border border-gray-600 fade-in-up" style="animation-delay: 0.2s;">
+            <h2 class="text-base md:text-lg font-semibold text-white mb-4 text-center">Conexões Locais de Sites</h2>
+            <div class="flex flex-wrap justify-center gap-4 md:gap-6">
 
-                <!-- Conexões do SIIRS01 -->
-                <div class="flex flex-col items-center bg-gray-700 py-4 px-6 rounded-lg shadow-sm w-full md:w-auto">
-                    <span class="font-bold text-base mb-2">SIIRS01</span>
-                    <div class="flex flex-col gap-2 text-sm">
+                <div class="flex flex-col items-center bg-gray-700 py-3 px-4 md:py-4 md:px-6 rounded-lg shadow-sm w-full sm:w-1/2 md:w-auto">
+                    <i class="fas fa-tower-cell text-red-600 mb-2 text-2xl"></i>
+                    <span class="font-bold text-sm md:text-base mb-2">SIIRS01</span>
+                    <div class="flex flex-col gap-1 text-xs md:text-sm">
+                        <div class="flex items-center gap-2"><i class="fas fa-mobile-alt text-green-400"></i> 268 Clientes Móvel</div>
+                        <div class="flex items-center gap-2"><i class="fas fa-signal text-green-400"></i> 3G</div>
+                        <div class="flex flex-col items-center bg-gray-700 py-3 px-4 md:py-4 md:px-6 rounded-lg shadow-sm w-full sm:w-1/2 md:w-auto">
+                    <i class="fas fa-tower-cell text-red-600 mb-2 text-2xl"></i>
+                    <span class="font-bold text-sm md:text-base mb-2">SIIRS01</span>
+                    <div class="flex flex-col gap-1 text-xs md:text-sm">
                         <div class="flex items-center gap-2"><i class="fas fa-mobile-alt text-green-400"></i> 268 Clientes Móvel</div>
                         <div class="flex items-center gap-2"><i class="fas fa-signal text-green-400"></i> 3G</div>
                         <div class="flex items-center gap-2"><i class="fas fa-wifi text-green-400"></i> 4G</div>
                         <div class="flex items-center gap-2"><i class="fas fa-user-tie text-green-400"></i> 3 Clientes FO EDD</div>
+                        <div class="flex items-center gap-2"><i class="fas fa-tachometer-alt text-green-400"></i> ISP LOCAL DESKTOP: 600 DW / 300 UP</div>
                     </div>
                 </div>
 
-                <!-- Conexões do SIMDU01 -->
-                <div class="flex flex-col items-center bg-gray-700 py-4 px-6 rounded-lg shadow-sm w-full md:w-auto">
-                    <span class="font-bold text-base mb-2">SIMDU01</span>
-                    <div class="flex flex-col gap-2 text-sm">
+                <div class="flex flex-col items-center bg-gray-700 py-3 px-4 md:py-4 md:px-6 rounded-lg shadow-sm w-full sm:w-1/2 md:w-auto">
+                    <i class="fas fa-tower-cell text-red-600 mb-2 text-2xl"></i>
+                    <span class="font-bold text-sm md:text-base mb-2">SIMDU01</span>
+                    <div class="flex flex-col gap-1 text-xs md:text-sm">
                         <div class="flex items-center gap-2"><i class="fas fa-mobile-alt text-green-400"></i> 491 Clientes Móvel</div>
                         <div class="flex items-center gap-2"><i class="fas fa-signal text-green-400"></i> 3G</div>
                         <div class="flex items-center gap-2"><i class="fas fa-wifi text-green-400"></i> 4G</div>
@@ -225,10 +225,10 @@
                     </div>
                 </div>
 
-                <!-- Conexões do SIABB02 -->
-                <div class="flex flex-col items-center bg-gray-700 py-4 px-6 rounded-lg shadow-sm w-full md:w-auto">
-                    <span class="font-bold text-base mb-2">SIABB02</span>
-                    <div class="flex flex-col gap-2 text-sm">
+                <div class="flex flex-col items-center bg-gray-700 py-3 px-4 md:py-4 md:px-6 rounded-lg shadow-sm w-full sm:w-1/2 md:w-auto">
+                    <i class="fas fa-tower-cell text-red-600 mb-2 text-2xl"></i>
+                    <span class="font-bold text-sm md:text-base mb-2">SIABB02</span>
+                    <div class="flex flex-col gap-1 text-xs md:text-sm">
                         <div class="flex items-center gap-2"><i class="fas fa-mobile-alt text-green-400"></i> 963 Clientes Móvel</div>
                         <div class="flex items-center gap-2"><i class="fas fa-signal text-green-400"></i> 3G</div>
                         <div class="flex items-center gap-2"><i class="fas fa-wifi text-green-400"></i> 4G</div>
@@ -236,15 +236,23 @@
                     </div>
                 </div>
 
-                <!-- Conexões do SIABBR1 -->
-                <div class="flex flex-col items-center bg-gray-700 py-4 px-6 rounded-lg shadow-sm w-full md:w-auto">
-                    <span class="font-bold text-base mb-2">SIABBR1</span>
-                    <div class="flex flex-col gap-2 text-sm">
+                <div class="flex flex-col items-center bg-gray-700 py-3 px-4 md:py-4 md:px-6 rounded-lg shadow-sm w-full sm:w-1/2 md:w-auto">
+                    <i class="fas fa-tower-cell text-red-600 mb-2 text-2xl"></i>
+                    <span class="font-bold text-sm md:text-base mb-2">SIABBR1</span>
+                    <div class="flex flex-col gap-1 text-xs md:text-sm">
                         <div class="flex items-center gap-2"><i class="fas fa-signal text-green-400"></i> 3G</div>
                         <div class="flex items-center gap-2"><i class="fas fa-wifi text-green-400"></i> 4G</div>
                     </div>
                 </div>
 
+                <div class="flex flex-col items-center bg-gray-700 py-3 px-4 md:py-4 md:px-6 rounded-lg shadow-sm w-full sm:w-1/2 md:w-auto">
+                    <i class="fas fa-satellite-dish text-green-400 mb-2 text-2xl"></i>
+                    <span class="font-bold text-sm md:text-base mb-2">SIBRU1E</span>
+                    <div class="flex flex-col gap-1 text-xs md:text-sm">
+                        <div class="flex items-center gap-2"><i class="fas fa-satellite-dish text-green-400"></i> GPON RESID CLARO</div>
+                        <div class="flex items-center gap-2"><i class="fas fa-tachometer-alt text-green-400"></i> 1G DW / 500 UP</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -252,13 +260,12 @@
     <div id="geminiModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" id="closeModalBtn">&times;</span>
-            <h2 class="text-2xl font-bold mb-4">Análise da Rede SD-WAN</h2>
-            <div id="modal-text" class="text-sm"></div>
+            <h2 class="text-xl md:text-2xl font-bold mb-4">Análise da Rede SD-WAN</h2>
+            <div id="modal-text" class="text-sm md:text-base"></div>
         </div>
     </div>
 
     <script>
-        // Variáveis de configuração da simulação
         const networkContainer = document.querySelector('.network-container');
         const canvas = document.getElementById('networkCanvas');
         const ctx = canvas.getContext('2d');
@@ -276,7 +283,6 @@
         let linkAbbr1Abb01Broken = false;
         let linkIarrasAbbr1Broken = false;
         
-        // Cores e estilos refinados
         const colors = {
             tower: '#e52b2b',
             device: '#84e2ff',
@@ -293,37 +299,32 @@
             ipran: '#68d391'
         };
         
-        // Coordenadas dos pontos da rede (relativas ao canvas)
         const devices = {
             manduri: { x: 0.2, y: 0.5, label: 'SIMDU01' },
-            iaras: { x: 0.4, y: 0.5, label: 'SIIRS01', subLabel: 'ISP LOCAL DESKTOP' },
+            iaras: { x: 0.4, y: 0.5, label: 'SIIRS01' },
             aguasDeSantaBarbara: { x: 0.5, y: 0.3, label: 'SIABBR1' },
             newDevice: { x: 0.7, y: 0.3, label: 'SIABB01' }, 
             sibru50: { x: 0.9, y: 0.1, label: 'SIBRU50' },
-            internet: { x: 0.4, y: 0.75, label: 'INTERNET', subLabel: 'TÚNEL XVLAN IPSEC' },
-            sibru1e: { x: 0.9, y: 0.75, label: 'SIBRU1E', subLabel: 'GPON RESID CLARO' },
+            internet: { x: 0.4, y: 0.75, label: 'INTERNET', subLabel: 'TÚNEL VXLAN IPSEC\nFORTIGATE 40F' },
+            sibru1e: { x: 0.9, y: 0.75, label: 'SIBRU1E', subLabel: 'GPON RESID CLARO\n1G DW / 500 UP' },
             ipran: { x: 0.9, y: 0.425, label: 'IPRAN' },
             siabb02: { x: 0.6, y: 0.45, label: 'SIABB02' },
             capacidade: { x: (0.7 + 0.9) / 2, y: (0.3 + 0.1) / 2, label: 'CAPACIDADE' }
         };
 
-        // Definição dos caminhos para o tráfego
         const paths = {
-            // Rotas principais
             primary: {
                 siirs: [devices.iaras, devices.aguasDeSantaBarbara, devices.newDevice, devices.capacidade, devices.sibru50],
                 simdu: [devices.manduri, devices.aguasDeSantaBarbara, devices.newDevice, devices.capacidade, devices.sibru50],
                 siabb02: [devices.siabb02, devices.aguasDeSantaBarbara, devices.newDevice, devices.capacidade, devices.sibru50]
             },
-            // Rotas de failover para falha entre SIIRS01 e SIABBR1
             failoverLink1: {
                 siirs: [devices.iaras, devices.internet, devices.sibru1e, devices.ipran, devices.sibru50],
                 simdu: [devices.manduri, devices.aguasDeSantaBarbara, devices.newDevice, devices.capacidade, devices.sibru50],
                 siabb02: [devices.siabb02, devices.aguasDeSantaBarbara, devices.newDevice, devices.capacidade, devices.sibru50]
             },
-            // Rotas de failover para falha entre SIABBR1 e SIABB01 (todas as rotas são afetadas)
             failoverLink2: {
-                siirs: [devices.iaras, devices.aguasDeSantaBarbara, devices.iaras, devices.internet, devices.sibru1e, devices.ipran, devices.sibru50],
+                siirs: [devices.iaras, devices.internet, devices.sibru1e, devices.ipran, devices.sibru50],
                 simdu: [devices.manduri, devices.aguasDeSantaBarbara, devices.iaras, devices.internet, devices.sibru1e, devices.ipran, devices.sibru50],
                 siabb02: [devices.siabb02, devices.aguasDeSantaBarbara, devices.iaras, devices.internet, devices.sibru1e, devices.ipran, devices.sibru50]
             }
@@ -335,7 +336,6 @@
             { id: 'siabb02', pos: 0.6, speed: 0.01 }
         ];
 
-        // Função para criar e posicionar os ícones dos dispositivos
         function setupDevices() {
             document.querySelectorAll('.device-icon-container').forEach(el => el.remove());
 
@@ -353,6 +353,9 @@
                     if (key === 'sibru50') {
                         iconHtml = `<i class="fas fa-server fa-2x"></i>`;
                         iconColorClass = 'text-red-500';
+                    } else if (key === 'sibru1e') {
+                        iconHtml = `<i class="fas fa-satellite-dish fa-2x"></i>`;
+                        iconColorClass = 'text-green-400';
                     } else {
                         iconHtml = `<i class="fas fa-tower-cell fa-2x"></i>`;
                         iconColorClass = 'text-red-600';
@@ -376,11 +379,10 @@
             }
         }
 
-        // Função para desenhar a cena estática (links e nuvens)
         function drawScene() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.clearRect(0, 0, 0, 0); // Correção para limpar todo o canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Linha adicionada para corrigir a limpeza do canvas
 
-            // Títulos das seções de roteamento
             ctx.save();
             ctx.fillStyle = colors.label;
             ctx.font = `bold ${Math.min(canvas.width * 0.03, 18)}px Inter`;
@@ -392,12 +394,11 @@
             ctx.lineWidth = 4;
             ctx.setLineDash([]);
             
-            // Links da via principal
             const primaryLinkColor = linkAbbr1Abb01Broken || linkIarrasAbbr1Broken ? 'transparent' : colors.principal;
             drawLineWithGradient(
                 canvas.width * devices.iaras.x, canvas.height * devices.iaras.y,
                 canvas.width * devices.aguasDeSantaBarbara.x, canvas.height * devices.aguasDeSantaBarbara.y,
-                linkIarrasAbbr1Broken ? colors.broken : (linkAbbr1Abb01Broken ? colors.redundancy : colors.principal)
+                linkIarrasAbbr1Broken ? colors.broken : (linkAbbr1Abb01Broken ? 'transparent' : colors.principal)
             );
 
             drawLineWithGradient(
@@ -409,13 +410,13 @@
             drawLineWithGradient(
                 canvas.width * devices.newDevice.x, canvas.height * devices.newDevice.y,
                 canvas.width * devices.capacidade.x, canvas.height * devices.capacidade.y,
-                linkAbbr1Abb01Broken ? colors.broken : colors.principal
+                linkAbbr1Abb01Broken ? 'transparent' : colors.principal
             );
             
             drawLineWithGradient(
                 canvas.width * devices.capacidade.x, canvas.height * devices.capacidade.y,
                 canvas.width * devices.sibru50.x, canvas.height * devices.sibru50.y,
-                linkAbbr1Abb01Broken ? colors.broken : colors.principal
+                linkAbbr1Abb01Broken ? 'transparent' : colors.principal
             );
 
             if (linkAbbr1Abb01Broken) {
@@ -430,7 +431,6 @@
                 drawX(midX, midY, colors.broken);
             }
             
-            // Rota de redundância
             ctx.beginPath();
             ctx.moveTo(canvas.width * devices.iaras.x, canvas.height * devices.iaras.y);
             ctx.lineTo(canvas.width * devices.internet.x, canvas.height * devices.internet.y);
@@ -439,15 +439,14 @@
             ctx.lineTo(canvas.width * devices.sibru50.x, canvas.height * devices.sibru50.y);
             
             ctx.lineWidth = 4;
-            ctx.strokeStyle = linkAbbr1Abb01Broken ? colors.redundancy : colors.redundancy;
+            ctx.strokeStyle = linkAbbr1Abb01Broken || linkIarrasAbbr1Broken ? colors.redundancy : 'rgba(99, 179, 237, 0.4)';
             ctx.setLineDash([10, 10]);
             ctx.stroke();
             
-            // Links estáticos
             drawLineWithGradient(
                 canvas.width * devices.manduri.x, canvas.height * devices.manduri.y,
                 canvas.width * devices.aguasDeSantaBarbara.x, canvas.height * devices.aguasDeSantaBarbara.y,
-                linkAbbr1Abb01Broken ? colors.redundancy : colors.static
+                colors.static
             );
             
             ctx.setLineDash([]);
@@ -455,16 +454,13 @@
             drawLineWithGradient(
                 canvas.width * devices.siabb02.x, canvas.height * devices.siabb02.y,
                 canvas.width * devices.aguasDeSantaBarbara.x, canvas.height * devices.aguasDeSantaBarbara.y,
-                linkAbbr1Abb01Broken ? colors.redundancy : colors.static
+                colors.static
             );
 
-            // Desenha as nuvens
-            drawCloud(canvas.width * devices.internet.x, canvas.height * devices.internet.y, devices.internet.label, colors.internetCloud, devices.internet.subLabel, true);
+            drawCloud(canvas.width * devices.internet.x, canvas.height * devices.internet.y, devices.internet.label, colors.internetCloud, devices.internet.subLabel, linkAbbr1Abb01Broken || linkIarrasAbbr1Broken, true);
             drawCloud(canvas.width * devices.capacidade.x, canvas.height * devices.capacidade.y, 'CAPACIDADE', colors.capacidade);
             drawCloud(canvas.width * devices.ipran.x, canvas.height * devices.ipran.y, 'IPRAN', colors.ipran);
             
-
-            // Etiquetas de conexão
             ctx.save();
             ctx.fillStyle = colors.label;
             ctx.font = `normal ${Math.min(canvas.width * 0.015, 12)}px Inter`;
@@ -489,7 +485,6 @@
             ctx.restore();
         }
 
-        // Função para desenhar um 'X' de falha mais proeminente
         function drawX(x, y, color) {
             ctx.save();
             ctx.fillStyle = color;
@@ -500,12 +495,17 @@
             ctx.restore();
         }
 
-        // Função para desenhar a nuvem como um retângulo
-        function drawCloud(x, y, label, color, subLabel = '', highlight = false) {
+        function drawCloud(x, y, label, color, subLabel = '', highlight = false, isInternetBox = false) {
             ctx.save();
             
-            const rectWidth = 120;
-            const rectHeight = 60;
+            let rectWidth = 120;
+            let rectHeight = 60;
+
+            if (isInternetBox) {
+                rectWidth = Math.max(180, canvas.width * 0.25);
+                rectHeight = Math.max(80, canvas.height * 0.15);
+            }
+            
             const rectX = x - rectWidth / 2;
             const rectY = y - rectHeight / 2;
             const cornerRadius = 10;
@@ -514,13 +514,11 @@
             ctx.shadowColor = 'rgba(0, 0, 0, 0.4)';
             ctx.shadowBlur = 15;
             
-            // Estilo de destaque
             if (highlight) {
-                ctx.shadowColor = color;
-                ctx.shadowBlur = 20;
+                ctx.shadowColor = '#facc15';
+                ctx.shadowBlur = 25;
             }
             
-            // Desenha o retângulo com bordas arredondadas
             ctx.beginPath();
             ctx.moveTo(rectX + cornerRadius, rectY);
             ctx.lineTo(rectX + rectWidth - cornerRadius, rectY);
@@ -534,17 +532,18 @@
             ctx.closePath();
             ctx.fill();
 
-            // Adiciona uma borda se for destacado
             if (highlight) {
-                ctx.strokeStyle = color;
+                ctx.strokeStyle = colors.internetCloud;
                 ctx.lineWidth = 3;
                 ctx.stroke();
             }
 
-            ctx.shadowBlur = 0; // Resetar para não afetar o texto
+            ctx.shadowBlur = 0;
             
-            // Texto principal
-            if (label === 'INTERNET') {
+            if (isInternetBox) {
+                ctx.font = `bold ${Math.min(canvas.width * 0.035, 18)}px Inter`;
+                ctx.fillStyle = colors.internetLabel;
+            } else if (label === 'INTERNET') {
                 ctx.font = `bold ${Math.min(canvas.width * 0.03, 14)}px Inter`;
                 ctx.fillStyle = colors.internetLabel;
             } else {
@@ -554,24 +553,29 @@
             
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.fillText(label, x, y - (subLabel ? 10 : 0));
-
-            // Sub-texto
-            if (subLabel) {
-                ctx.font = `normal ${Math.min(canvas.width * 0.015, 10)}px Inter`;
-                if (label === 'INTERNET') {
+            
+            const lines = subLabel.split('\n');
+            let lineHeight = isInternetBox ? 20 : 14;
+            const startY = y - (lines.length > 1 ? lineHeight / 2 : 0);
+            
+            ctx.fillText(label, x, startY - (lines.length > 0 ? lineHeight : 0));
+            
+            lines.forEach((line, index) => {
+                ctx.font = `normal ${Math.min(canvas.width * 0.025, 14)}px Inter`;
+                if (isInternetBox) {
+                    ctx.fillStyle = colors.internetLabel;
+                } else if (label === 'INTERNET') {
                     ctx.fillStyle = colors.internetLabel;
                 } else {
                     ctx.fillStyle = colors.label;
                 }
                 ctx.textBaseline = 'middle';
-                ctx.fillText(subLabel, x, y + 10);
-            }
+                ctx.fillText(line, x, startY + (index * lineHeight) + 10);
+            });
             
             ctx.restore();
         }
         
-        // Função para desenhar a linha com gradiente para um visual mais moderno
         function drawLineWithGradient(startX, startY, endX, endY, color) {
             ctx.save();
             const gradient = ctx.createLinearGradient(startX, startY, endX, endY);
@@ -586,7 +590,6 @@
             ctx.restore();
         }
 
-        // Função para redimensionar o canvas e os ícones
         function resizeCanvas() {
             canvas.width = networkContainer.offsetWidth;
             canvas.height = Math.min(canvas.width * 0.8, window.innerHeight * 0.75);
@@ -599,7 +602,6 @@
             animate();
         };
         
-        // Função auxiliar para desenhar o tráfego em um caminho
         function drawTraffic(dot, path) {
             if (path.length < 2) return;
             let totalPathLength = 0;
@@ -638,7 +640,6 @@
             }
         }
         
-        // Função de atualização da animação
         function update() {
             const principalSpeed = 0.01;
             const failoverSpeed = 0.015;
@@ -656,11 +657,9 @@
             });
         }
         
-        // Função de renderização (desenha os elementos em movimento)
         function render() {
             drawScene();
             
-            // Renderiza o tráfego de acordo com o estado da simulação
             trafficDots.forEach(dot => {
                 let currentPath;
                 if (linkAbbr1Abb01Broken) {
@@ -679,7 +678,6 @@
                 drawTraffic(dot, currentPath);
             });
             
-            // Animação de pulso nos ícones
             document.querySelectorAll('.icon-pulse').forEach(el => el.classList.remove('icon-pulse'));
             if (linkAbbr1Abb01Broken) {
                 document.getElementById('device-aguasDeSantaBarbara').classList.add('icon-pulse');
@@ -689,15 +687,6 @@
                 document.getElementById('device-aguasDeSantaBarbara').classList.add('icon-pulse');
             }
         }
-
-        // O loop principal da animação
-        function animate() {
-            update();
-            render();
-            animationFrameId = requestAnimationFrame(animate);
-        }
-
-        // --- Lógica do Gemini API ---
 
         async function getGeminiAnalysis(prompt) {
             loadingIndicator.classList.remove('hidden');
@@ -741,9 +730,9 @@
         geminiAnalyzeBtn.addEventListener('click', async () => {
             let prompt = "";
             if (linkAbbr1Abb01Broken) {
-                prompt = "A simulação SD-WAN mostra uma falha no link principal entre SIABBR1 e SIABB01. O tráfego dos sites SIMDU01, SIABB02 e SIIRS01 está sendo redirecionado para a rota de redundância. Descreva o impacto dessa falha e as ações tomadas pelo sistema SD-WAN, destacando a estratégia de convergência. Formate a resposta usando Markdown para títulos e listas.";
+                prompt = "A simulação SD-WAN mostra uma falha no link principal entre SIABBR1 e SIABB01. O tráfego dos sites SIMDU01 e SIABB02 está sendo redirecionado para a rota de redundância, passando por SIABBR1 e SIIRS01. O tráfego do SIIRS01 vai direto para a rota de redundância. Descreva o impacto dessa falha e as ações tomadas pelo sistema SD-WAN, destacando a estratégia de convergência. Formate a resposta usando Markdown para títulos e listas.";
             } else if (linkIarrasAbbr1Broken) {
-                prompt = "A simulação SD-WAN mostra uma falha no link entre SIIRS01 e SIABBR1. Apenas o tráfego do site SIIRS01 é roteado para a rota de redundância, que começa na INTERNET TÚNEL XVLAN IPSEC, e de lá segue para SIBRU1E, IPRAN e SIBRU50. Os sites SIMDU01 e SIABB02 continuam a usar a via principal. Descreva o impacto dessa falha e as ações tomadas pelo sistema SD-WAN. Explique os benefícios da comutação seletiva. Formate a resposta usando Markdown para títulos e listas.";
+                prompt = "A simulação SD-WAN mostra uma falha no link entre SIIRS01 e SIABBR1. Apenas o tráfego do site SIIRS01 é roteado para a rota de redundância, que começa na INTERNET TÚNEL VXLAN IPSEC, e de lá segue para SIBRU1E, IPRAN e SIBRU50. Os sites SIMDU01 e SIABB02 continuam a usar a via principal. Descreva o impacto dessa falha e as ações tomadas pelo sistema SD-WAN. Explique os benefícios da comutação seletiva. Formate a resposta usando Markdown para títulos e listas.";
             } else {
                 prompt = "A simulação SD-WAN está operando sem falhas. Todos os sites (SIMDU01, SIIRS01, SIABB02) estão usando a rota principal. Descreva o cenário ideal de operação SD-WAN e os benefícios de ter uma rota de redundância disponível. Formate a resposta usando Markdown para títulos e listas.";
             }
@@ -764,12 +753,10 @@
             }
         });
 
-        // Corrigindo a lógica dos botões 1 e 2
         breakLink2Btn.addEventListener('click', () => {
             if (!linkAbbr1Abb01Broken) {
                 linkAbbr1Abb01Broken = true;
                 
-                // Reconfigura o tráfego para começar a animação do zero
                 trafficDots = trafficDots.map(dot => ({ ...dot, pos: 0 }));
 
                 breakLink1Btn.disabled = true;
@@ -786,7 +773,6 @@
             if (!linkIarrasAbbr1Broken) {
                 linkIarrasAbbr1Broken = true;
                 
-                // Reconfigura o tráfego para começar a animação do zero
                 trafficDots = trafficDots.map(dot => ({ ...dot, pos: 0 }));
                 
                 breakLink1Btn.disabled = true;
@@ -798,7 +784,6 @@
                 }, 2000);
             }
         });
-
 
         resetBtn.addEventListener('click', () => {
             linkAbbr1Abb01Broken = false;
@@ -812,6 +797,12 @@
         });
 
         statusMessage.textContent = 'Rastreando os caminhos principais dos sites.';
+
+        function animate() {
+            update();
+            render();
+            animationFrameId = requestAnimationFrame(animate);
+        }
     </script>
 </body>
 </html>
