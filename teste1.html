@@ -43,7 +43,7 @@
         .device-label {
             white-space: pre-wrap;
             text-align: center;
-            font-size: 0.75rem;
+            font-size: 0.95rem;
             line-height: 1rem;
             font-weight: 500;
             color: #e0e0e0;
@@ -53,7 +53,7 @@
         .sub-device-label {
             white-space: pre-wrap;
             text-align: center;
-            font-size: 0.7rem;
+            font-size: 0.95rem;
             line-height: 0.9rem;
             font-weight: 400;
             color: #b0b0b0;
@@ -229,6 +229,17 @@
                         <div class="flex items-center gap-2"><i class="fas fa-user-tie text-green-400"></i> 3 Clientes FO EDD</div>
                     </div>
                 </div>
+                
+                <div class="flex flex-col items-center bg-gray-700 py-3 px-4 md:py-4 md:px-6 rounded-lg shadow-sm w-full sm:w-1/2 md:w-auto">
+                    <i class="fas fa-tower-cell text-red-600 mb-2 text-2xl"></i>
+                    <span class="font-bold text-sm md:text-base mb-2">SIABB01</span>
+                    <div class="flex flex-col gap-1 text-xs md:text-sm">
+                        <div class="flex items-center gap-2"><i class="fas fa-mobile-alt text-green-400"></i> 1120 Clientes Móvel</div>
+                        <div class="flex items-center gap-2"><i class="fas fa-signal text-green-400"></i> 3G</div>
+                        <div class="flex items-center gap-2"><i class="fas fa-wifi text-green-400"></i> 4G</div>
+                        <div class="flex items-center gap-2"><i class="fas fa-user-tie text-green-400"></i> 5 Clientes FO EDD</div>
+                    </div>
+                </div>
 
                 <div class="flex flex-col items-center bg-gray-700 py-3 px-4 md:py-4 md:px-6 rounded-lg shadow-sm w-full sm:w-1/2 md:w-auto">
                     <i class="fas fa-tower-cell text-red-600 mb-2 text-2xl"></i>
@@ -236,6 +247,14 @@
                     <div class="flex flex-col gap-1 text-xs md:text-sm">
                         <div class="flex items-center gap-2"><i class="fas fa-signal text-green-400"></i> 3G</div>
                         <div class="flex items-center gap-2"><i class="fas fa-wifi text-green-400"></i> 4G</div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col items-center bg-gray-700 py-3 px-4 md:py-4 md:px-6 rounded-lg shadow-sm w-full sm:w-1/2 md:w-auto">
+                    <i class="fas fa-server text-red-500 mb-2 text-2xl"></i>
+                    <span class="font-bold text-sm md:text-base mb-2">SIBRU50</span>
+                    <div class="flex flex-col gap-1 text-xs md:text-sm">
+                        <div class="flex items-center gap-2"><i class="fas fa-check-circle text-green-400"></i> Hub Principal</div>
                     </div>
                 </div>
 
@@ -277,6 +296,7 @@
         let linkAbbr1Abb01Broken = false;
         let linkIarrasAbbr1Broken = false;
         
+        // Define as cores para a simulação
         const colors = {
             tower: '#e52b2b',
             device: '#84e2ff',
@@ -293,52 +313,60 @@
             ipran: '#63b3ed'
         };
         
+        // Define as posições dos dispositivos na tela
         const devices = {
-            manduri: { x: 0.2, y: 0.5, label: 'SIMDU01' },
-            iaras: { x: 0.4, y: 0.5, label: 'SIIRS01' },
-            aguasDeSantaBarbara: { x: 0.5, y: 0.3, label: 'SIABBR1' },
-            newDevice: { x: 0.7, y: 0.3, label: 'SIABB01' }, 
-            sibru50: { x: 0.9, y: 0.1, label: 'SIBRU50' },
-            internet: { x: 0.65, y: 0.625, label: 'INTERNET', subLabel: 'TÚNEL VXLAN IPSEC\nFORTIGATE 40F' },
-            sibru1e: { x: 0.9, y: 0.75, label: 'SIBRU1E', subLabel: 'GPON RESID CLARO\n1G DW / 500 UP' },
+            manduri: { x: 0.2, y: 0.5, label: 'SIMDU01', subLabel: 'MANDURI' },
+            iaras: { x: 0.5, y: 0.75, label: 'SIIRS01', subLabel: 'ISP LOCAL\nIARAS' },
+            aguasDeSantaBarbara: { x: 0.5, y: 0.3, label: 'SIABBR1', subLabel: 'AGUAS DE ST BARBARA' },
+            newDevice: { x: 0.7, y: 0.3, label: 'SIABB01', subLabel: 'AGUAS DE ST BARBARA' },
+            sibru50: { x: 0.9, y: 0.1, label: 'SIBRU50', subLabel: 'BAURU' },
+            internet: { x: 0.7, y: 0.75, label: 'INTERNET', subLabel: 'TÚNEL VXLAN IPSEC\nFORTIGATE 40F' },
+            sibru1e: { x: 0.9, y: 0.75, label: 'SIBRU1E', subLabel: 'GPON CLARO\n BAURU' },
             ipran: { x: 0.9, y: 0.425, label: 'IPRAN' },
             siabb02: { x: 0.6, y: 0.45, label: 'SIABB02' },
             capacidade: { x: (0.7 + 0.9) / 2, y: (0.3 + 0.1) / 2, label: 'CAPACIDADE' }
         };
 
+        // Define os caminhos do tráfego para a simulação
         const paths = {
             primary: {
                 siirs: [devices.iaras, devices.aguasDeSantaBarbara, devices.newDevice, devices.capacidade, devices.sibru50],
                 simdu: [devices.manduri, devices.aguasDeSantaBarbara, devices.newDevice, devices.capacidade, devices.sibru50],
-                siabb02: [devices.siabb02, devices.aguasDeSantaBarbara, devices.newDevice, devices.capacidade, devices.sibru50]
+                siabb02: [devices.siabb02, devices.aguasDeSantaBarbara, devices.newDevice, devices.capacidade, devices.sibru50],
+                siabb01: [devices.newDevice, devices.capacidade, devices.sibru50]
             },
             failoverLink1: {
                 siirs: [devices.iaras, devices.internet, devices.sibru1e, devices.ipran, devices.sibru50],
                 simdu: [devices.manduri, devices.aguasDeSantaBarbara, devices.newDevice, devices.capacidade, devices.sibru50],
-                siabb02: [devices.siabb02, devices.aguasDeSantaBarbara, devices.newDevice, devices.capacidade, devices.sibru50]
+                siabb02: [devices.siabb02, devices.aguasDeSantaBarbara, devices.newDevice, devices.capacidade, devices.sibru50],
+                siabb01: [devices.newDevice, devices.capacidade, devices.sibru50]
             },
             failoverLink2: {
                 siirs: [devices.iaras, devices.internet, devices.sibru1e, devices.ipran, devices.sibru50],
                 simdu: [devices.manduri, devices.aguasDeSantaBarbara, devices.iaras, devices.internet, devices.sibru1e, devices.ipran, devices.sibru50],
-                siabb02: [devices.siabb02, devices.aguasDeSantaBarbara, devices.iaras, devices.internet, devices.sibru1e, devices.ipran, devices.sibru50]
+                siabb02: [devices.siabb02, devices.aguasDeSantaBarbara, devices.iaras, devices.internet, devices.sibru1e, devices.ipran, devices.sibru50],
+                siabb01: [devices.newDevice, devices.sibru50]
             },
             failoverSiabb01: {
                 siabb01: [devices.newDevice, devices.sibru50]
             }
         };
 
+        // Pontos de tráfego que se movem
         let trafficDots = [
             { id: 'siirs', pos: 0, speed: 0.01 },
             { id: 'simdu', pos: 0.3, speed: 0.01 },
             { id: 'siabb02', pos: 0.6, speed: 0.01 },
-            { id: 'siabb01', pos: 0, speed: 0.015, enabled: false }
+            { id: 'siabb01', pos: 0.1, speed: 0.01 }
         ];
 
+        // Cria os ícones dos dispositivos no HTML
         function setupDevices() {
             document.querySelectorAll('.device-icon-container').forEach(el => el.remove());
 
             for (const key in devices) {
                 const device = devices[key];
+                // Ignora os dispositivos que são apenas pontos de passagem visuais
                 if (key !== 'internet' && key !== 'capacidade' && key !== 'ipran') {
                     const deviceContainer = document.createElement('div');
                     deviceContainer.className = 'device-icon-container';
@@ -364,7 +392,9 @@
                     }
                     
                     deviceContainer.innerHTML = `
-                        ${iconHtml}
+                        <div class="device-icon-wrapper ${iconColorClass}">
+                            ${iconHtml}
+                        </div>
                         <span class="device-label">${device.label}</span>
                         ${subLabelHtml}
                     `;
@@ -377,6 +407,7 @@
             }
         }
 
+        // Desenha as linhas e os ícones no canvas
         function drawScene() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -391,43 +422,45 @@
             ctx.lineWidth = 4;
             ctx.setLineDash([]);
             
-            const primaryLinkColor = linkAbbr1Abb01Broken || linkIarrasAbbr1Broken ? 'transparent' : colors.principal;
+            // Desenha a via principal com a lógica de falha
+            const primaryPathColor = linkAbbr1Abb01Broken || linkIarrasAbbr1Broken ? 'transparent' : colors.principal;
+            
+            drawLineWithGradient(
+                canvas.width * devices.manduri.x, canvas.height * devices.manduri.y,
+                canvas.width * devices.aguasDeSantaBarbara.x, canvas.height * devices.aguasDeSantaBarbara.y,
+                colors.static
+            );
+            drawLineWithGradient(
+                canvas.width * devices.siabb02.x, canvas.height * devices.siabb02.y,
+                canvas.width * devices.aguasDeSantaBarbara.x, canvas.height * devices.aguasDeSantaBarbara.y,
+                colors.static
+            );
             drawLineWithGradient(
                 canvas.width * devices.iaras.x, canvas.height * devices.iaras.y,
                 canvas.width * devices.aguasDeSantaBarbara.x, canvas.height * devices.aguasDeSantaBarbara.y,
-                linkIarrasAbbr1Broken ? colors.broken : (linkAbbr1Abb01Broken ? 'transparent' : colors.principal)
+                linkIarrasAbbr1Broken ? colors.broken : primaryPathColor
             );
-
             drawLineWithGradient(
                 canvas.width * devices.aguasDeSantaBarbara.x, canvas.height * devices.aguasDeSantaBarbara.y,
                 canvas.width * devices.newDevice.x, canvas.height * devices.newDevice.y,
-                linkAbbr1Abb01Broken ? colors.broken : colors.principal
+                linkAbbr1Abb01Broken ? colors.broken : primaryPathColor
             );
-
             drawLineWithGradient(
                 canvas.width * devices.newDevice.x, canvas.height * devices.newDevice.y,
                 canvas.width * devices.capacidade.x, canvas.height * devices.capacidade.y,
-                linkAbbr1Abb01Broken ? 'transparent' : colors.principal
+                linkAbbr1Abb01Broken || linkIarrasAbbr1Broken ? 'transparent' : colors.principal
             );
-            
             drawLineWithGradient(
                 canvas.width * devices.capacidade.x, canvas.height * devices.capacidade.y,
                 canvas.width * devices.sibru50.x, canvas.height * devices.sibru50.y,
-                linkAbbr1Abb01Broken ? 'transparent' : colors.principal
+                linkAbbr1Abb01Broken || linkIarrasAbbr1Broken ? 'transparent' : colors.principal
             );
 
+            // Desenha o "X" se o link estiver quebrado
             if (linkAbbr1Abb01Broken) {
                 const midX = (canvas.width * devices.aguasDeSantaBarbara.x + canvas.width * devices.newDevice.x) / 2;
                 const midY = (canvas.height * devices.aguasDeSantaBarbara.y + canvas.height * devices.newDevice.y) / 2;
                 drawX(midX, midY, colors.broken);
-                
-                // Desenha o novo fluxo de SIABB01 para SIBRU50 quando a falha ocorre
-                ctx.setLineDash([5, 5]);
-                drawLineWithGradient(
-                    canvas.width * devices.newDevice.x, canvas.height * devices.newDevice.y,
-                    canvas.width * devices.sibru50.x, canvas.height * devices.sibru50.y,
-                    colors.redundancy
-                );
             }
 
             if (linkIarrasAbbr1Broken) {
@@ -436,36 +469,58 @@
                 drawX(midX, midY, colors.broken);
             }
             
-            ctx.beginPath();
-            ctx.moveTo(canvas.width * devices.iaras.x, canvas.height * devices.iaras.y);
-            ctx.lineTo(canvas.width * devices.internet.x, canvas.height * devices.internet.y);
-            ctx.lineTo(canvas.width * devices.sibru1e.x, canvas.height * devices.sibru1e.y);
-            ctx.lineTo(canvas.width * devices.ipran.x, canvas.height * devices.ipran.y);
-            ctx.lineTo(canvas.width * devices.sibru50.x, canvas.height * devices.sibru50.y);
-            
-            ctx.lineWidth = 4;
-            ctx.strokeStyle = linkAbbr1Abb01Broken || linkIarrasAbbr1Broken ? colors.redundancy : 'rgba(99, 179, 237, 0.4)';
+            // Desenha a rota de redundância
             ctx.setLineDash([10, 10]);
-            ctx.stroke();
-            
             drawLineWithGradient(
-                canvas.width * devices.manduri.x, canvas.height * devices.manduri.y,
-                canvas.width * devices.aguasDeSantaBarbara.x, canvas.height * devices.aguasDeSantaBarbara.y,
-                colors.static
+                canvas.width * devices.iaras.x, canvas.height * devices.iaras.y,
+                canvas.width * devices.internet.x, canvas.height * devices.internet.y,
+                linkIarrasAbbr1Broken ? colors.redundancy : 'rgba(99, 179, 237, 0.4)'
             );
+            drawLineWithGradient(
+                canvas.width * devices.internet.x, canvas.height * devices.internet.y,
+                canvas.width * devices.sibru1e.x, canvas.height * devices.sibru1e.y,
+                linkIarrasAbbr1Broken ? colors.redundancy : 'rgba(99, 179, 237, 0.4)'
+            );
+            drawLineWithGradient(
+                canvas.width * devices.sibru1e.x, canvas.height * devices.sibru1e.y,
+                canvas.width * devices.ipran.x, canvas.height * devices.ipran.y,
+                linkIarrasAbbr1Broken ? colors.redundancy : 'rgba(99, 179, 237, 0.4)'
+            );
+            drawLineWithGradient(
+                canvas.width * devices.ipran.x, canvas.height * devices.ipran.y,
+                canvas.width * devices.sibru50.x, canvas.height * devices.sibru50.y,
+                linkIarrasAbbr1Broken ? colors.redundancy : 'rgba(99, 179, 237, 0.4)'
+            );
+            
+            // Desenha o caminho de failover para SIABB01 quando o link principal está quebrado
+            if (linkAbbr1Abb01Broken) {
+                ctx.setLineDash([5, 5]);
+      
+                drawLineWithGradient(
+                    canvas.width * devices.internet.x, canvas.height * devices.internet.y,
+                    canvas.width * devices.sibru1e.x, canvas.height * devices.sibru1e.y,
+                    colors.redundancy
+                );
+                drawLineWithGradient(
+                    canvas.width * devices.sibru1e.x, canvas.height * devices.sibru1e.y,
+                    canvas.width * devices.ipran.x, canvas.height * devices.ipran.y,
+                    colors.redundancy
+                );
+                drawLineWithGradient(
+                    canvas.width * devices.ipran.x, canvas.height * devices.ipran.y,
+                    canvas.width * devices.sibru50.x, canvas.height * devices.sibru50.y,
+                    colors.redundancy
+                );
+            }
             
             ctx.setLineDash([]);
             
-            drawLineWithGradient(
-                canvas.width * devices.siabb02.x, canvas.height * devices.siabb02.y,
-                canvas.width * devices.aguasDeSantaBarbara.x, canvas.height * devices.aguasDeSantaBarbara.y,
-                colors.static
-            );
-
+            // Desenha as "nuvens" ou caixas de serviço
             drawCloud(canvas.width * devices.internet.x, canvas.height * devices.internet.y, devices.internet.label, colors.internetCloud, devices.internet.subLabel, linkAbbr1Abb01Broken || linkIarrasAbbr1Broken, true);
             drawCloud(canvas.width * devices.capacidade.x, canvas.height * devices.capacidade.y, 'CAPACIDADE', colors.capacidade);
             drawCloud(canvas.width * devices.ipran.x, canvas.height * devices.ipran.y, 'IPRAN', colors.ipran);
             
+            // Adiciona as legendas "MW"
             ctx.save();
             ctx.fillStyle = colors.label;
             ctx.font = `normal ${Math.min(canvas.width * 0.015, 12)}px Inter`;
@@ -490,6 +545,7 @@
             ctx.restore();
         }
 
+        // Desenha um "X" para indicar falha
         function drawX(x, y, color) {
             ctx.save();
             ctx.fillStyle = color;
@@ -500,6 +556,7 @@
             ctx.restore();
         }
 
+        // Desenha caixas de serviço ou "nuvens"
         function drawCloud(x, y, label, color, subLabel = '', highlight = false, isInternetBox = false) {
             ctx.save();
             
@@ -586,6 +643,7 @@
             ctx.restore();
         }
         
+        // Desenha uma linha com gradiente
         function drawLineWithGradient(startX, startY, endX, endY, color) {
             ctx.save();
             const gradient = ctx.createLinearGradient(startX, startY, endX, endY);
@@ -600,6 +658,7 @@
             ctx.restore();
         }
 
+        // Redimensiona o canvas quando a janela muda de tamanho
         function resizeCanvas() {
             canvas.width = networkContainer.offsetWidth;
             canvas.height = Math.min(canvas.width * 0.8, window.innerHeight * 0.75);
@@ -607,233 +666,177 @@
             drawScene();
         }
         window.addEventListener('resize', resizeCanvas);
-        window.onload = function() {
-            resizeCanvas();
-            animate();
-        };
-        
+
+        // Função para desenhar o tráfego de dados (pontos em movimento)
         function drawTraffic(dot, path) {
             if (path.length < 2) return;
             let totalPathLength = 0;
-            for(let i = 1; i < path.length; i++) {
-                const prev = path[i-1];
-                const dx = canvas.width * (path[i].x - prev.x);
-                const dy = canvas.height * (path[i].y - prev.y);
-                totalPathLength += Math.sqrt(dx * dx + dy * dy);
-            }
-            
-            let currentLength = dot.pos * totalPathLength;
-            let segmentLength = 0;
-            
+            const segments = [];
             for (let i = 1; i < path.length; i++) {
                 const prev = path[i - 1];
                 const dx = canvas.width * (path[i].x - prev.x);
                 const dy = canvas.height * (path[i].y - prev.y);
-                const currentSegmentLength = Math.sqrt(dx * dx + dy * dy);
+                const length = Math.sqrt(dx * dx + dy * dy);
+                segments.push({ length: length, start: prev, end: path[i] });
+                totalPathLength += length;
+            }
 
-                if (currentLength <= segmentLength + currentSegmentLength) {
-                    const startPoint = prev;
-                    const endPoint = path[i];
-                    const segmentProgress = (currentLength - segmentLength) / currentSegmentLength;
-                    const x = canvas.width * startPoint.x + (canvas.width * endPoint.x - canvas.width * startPoint.x) * segmentProgress;
-                    const y = canvas.height * startPoint.y + (canvas.height * endPoint.y - canvas.height * startPoint.y) * segmentProgress;
-                    ctx.beginPath();
-                    ctx.arc(x, y, 4, 0, 2 * Math.PI);
-                    ctx.fillStyle = colors.traffic;
-                    ctx.shadowColor = colors.traffic;
-                    ctx.shadowBlur = 10;
-                    ctx.fill();
-                    ctx.shadowBlur = 0;
+            let currentLength = dot.pos * totalPathLength;
+            let segmentLength = 0;
+            let currentX = 0;
+            let currentY = 0;
+
+            for (let i = 0; i < segments.length; i++) {
+                const segment = segments[i];
+                if (currentLength <= segmentLength + segment.length || i === segments.length - 1) {
+                    const progressInSegment = (currentLength - segmentLength) / segment.length;
+                    currentX = canvas.width * (segment.start.x + (segment.end.x - segment.start.x) * progressInSegment);
+                    currentY = canvas.height * (segment.start.y + (segment.end.y - segment.start.y) * progressInSegment);
                     break;
                 }
-                segmentLength += currentSegmentLength;
+                segmentLength += segment.length;
             }
+            
+            ctx.fillStyle = colors.traffic;
+            ctx.beginPath();
+            ctx.arc(currentX, currentY, 5, 0, Math.PI * 2);
+            ctx.fill();
         }
         
-        function update() {
-            const principalSpeed = 0.01;
-            const failoverSpeed = 0.015;
-
-            trafficDots.forEach(dot => {
-                let speed;
-                if (linkAbbr1Abb01Broken) {
-                    speed = failoverSpeed;
-                } else if (linkIarrasAbbr1Broken && dot.id === 'siirs') {
-                    speed = failoverSpeed;
-                } else {
-                    speed = principalSpeed;
-                }
-                if (dot.enabled) {
-                    dot.pos = (dot.pos + speed) % 1;
-                } else if (dot.id !== 'siabb01') {
-                     dot.pos = (dot.pos + speed) % 1;
-                }
-            });
-        }
-        
-        function render() {
+        // Loop principal da animação
+        function animate() {
+            // Desenha a cena estática
             drawScene();
+
+            // Determina qual caminho usar para o tráfego com base nas falhas
+            let currentPaths = paths.primary;
+            if (linkIarrasAbbr1Broken) {
+                currentPaths = paths.failoverLink1;
+            }
+            if (linkAbbr1Abb01Broken) {
+                currentPaths = paths.failoverLink2;
+            }
             
+            // Anima os pontos de tráfego
             trafficDots.forEach(dot => {
-                let currentPath;
-                if (linkAbbr1Abb01Broken) {
-                    if (dot.id === 'siirs') currentPath = paths.failoverLink2.siirs;
-                    else if (dot.id === 'simdu') currentPath = paths.failoverLink2.simdu;
-                    else if (dot.id === 'siabb02') currentPath = paths.failoverLink2.siabb02;
-                    else if (dot.id === 'siabb01' && dot.enabled) currentPath = paths.failoverSiabb01.siabb01;
-                } else if (linkIarrasAbbr1Broken) {
-                    if (dot.id === 'siirs') currentPath = paths.failoverLink1.siirs;
-                    else if (dot.id === 'simdu') currentPath = paths.failoverLink1.simdu;
-                    else if (dot.id === 'siabb02') currentPath = paths.failoverLink1.siabb02;
+                let path;
+                if (linkAbbr1Abb01Broken && dot.id === 'siabb01') {
+                    path = paths.failoverLink2.siabb01;
                 } else {
-                    if (dot.id === 'siirs') currentPath = paths.primary.siirs;
-                    else if (dot.id === 'simdu') currentPath = paths.primary.simdu;
-                    else if (dot.id === 'siabb02') currentPath = paths.primary.siabb02;
+                    path = currentPaths[dot.id];
                 }
-                
-                if (currentPath) {
-                   drawTraffic(dot, currentPath);
+
+                if (path) {
+                    dot.pos += dot.speed;
+                    if (dot.pos > 1) {
+                        dot.pos = 0;
+                    }
+                    drawTraffic(dot, path);
                 }
             });
-            
-            document.querySelectorAll('.icon-pulse').forEach(el => el.classList.remove('icon-pulse'));
-            if (linkAbbr1Abb01Broken) {
-                document.getElementById('device-aguasDeSantaBarbara').classList.add('icon-pulse');
-                document.getElementById('device-newDevice').classList.add('icon-pulse');
-            } else if (linkIarrasAbbr1Broken) {
-                document.getElementById('device-iaras').classList.add('icon-pulse');
-                document.getElementById('device-aguasDeSantaBarbara').classList.add('icon-pulse');
-            }
+
+            animationFrameId = requestAnimationFrame(animate);
         }
 
-        async function getGeminiAnalysis(prompt) {
+        // Lida com a falha de link 1
+        breakLink1Btn.addEventListener('click', () => {
+            linkIarrasAbbr1Broken = true;
+            linkAbbr1Abb01Broken = false;
+            statusMessage.textContent = 'Falha: SIIRS01 -> SIABBR1 (Via principal offline)';
+            updateButtonState();
+        });
+
+        // Lida com a falha de link 2
+        breakLink2Btn.addEventListener('click', () => {
+            linkAbbr1Abb01Broken = true;
+            linkIarrasAbbr1Broken = false;
+            statusMessage.textContent = 'Falha: SIABBR1 -> SIABB01 (Via principal offline)';
+            updateButtonState();
+        });
+
+        // Reinicia a simulação
+        resetBtn.addEventListener('click', () => {
+            linkAbbr1Abb01Broken = false;
+            linkIarrasAbbr1Broken = false;
+            statusMessage.textContent = 'Aguardando...';
+            updateButtonState();
+        });
+
+        // Atualiza o estado dos botões
+        function updateButtonState() {
+            if (linkIarrasAbbr1Broken) {
+                breakLink1Btn.disabled = true;
+                breakLink2Btn.disabled = true;
+            } else if (linkAbbr1Abb01Broken) {
+                breakLink1Btn.disabled = true;
+                breakLink2Btn.disabled = true;
+            } else {
+                breakLink1Btn.disabled = false;
+                breakLink2Btn.disabled = false;
+            }
+        }
+        updateButtonState();
+
+        // Lógica para a análise Gemini
+        geminiAnalyzeBtn.addEventListener('click', async () => {
             loadingIndicator.classList.remove('hidden');
             geminiAnalyzeBtn.disabled = true;
+            
+            let networkState = '';
+            if (linkAbbr1Abb01Broken) {
+                networkState = 'O link entre SIABBR1 e SIABB01 está falho. O tráfego de SIABB01 é redirecionado para a rota de redundância.';
+            } else if (linkIarrasAbbr1Broken) {
+                networkState = 'O link entre SIIRS01 e SIABBR1 está falho. O tráfego de SIIRS01 é redirecionado para a rota de redundância.';
+            } else {
+                networkState = 'A rede está funcionando normalmente, com o tráfego seguindo a via principal.';
+            }
+
+            const prompt = `Analise o seguinte cenário de rede SD-WAN e forneça uma breve explicação técnica sobre o estado da rede e as implicações: ${networkState}. Mencione a rota de redundância pelo túnel VXLAN IPSEC. Destaque a importância da redundância para os sites com mais clientes (SIABB02 e SIABB01).`;
+
             try {
-                let chatHistory = [];
-                chatHistory.push({ role: "user", parts: [{ text: prompt }] });
-                const payload = { contents: chatHistory };
                 const apiKey = "";
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
                 
+                const payload = {
+                    contents: [{
+                        role: "user",
+                        parts: [{ text: prompt }]
+                    }]
+                };
+
                 const response = await fetch(apiUrl, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
                     body: JSON.stringify(payload)
                 });
                 
-                if (!response.ok) {
-                    throw new Error(`API call failed with status: ${response.status}`);
-                }
-
                 const result = await response.json();
-                
-                if (result.candidates && result.candidates.length > 0 &&
-                    result.candidates[0].content && result.candidates[0].content.parts &&
-                    result.candidates[0].content.parts.length > 0) {
-                    const text = result.candidates[0].content.parts[0].text;
-                    return text;
-                } else {
-                    return "Não foi possível gerar a análise. A resposta da API está vazia ou mal formatada.";
-                }
+                const text = result?.candidates?.[0]?.content?.parts?.[0]?.text || 'Não foi possível gerar a análise.';
+                modalText.innerHTML = `<p class="whitespace-pre-wrap">${text}</p>`;
+                geminiModal.style.display = 'flex';
             } catch (error) {
-                console.error("Erro ao chamar a API Gemini:", error);
-                return `Ocorreu um erro: ${error.message}`;
+                console.error('Erro ao chamar a API do Gemini:', error);
+                modalText.innerHTML = `<p class="text-red-400">Ocorreu um erro ao gerar a análise. Tente novamente mais tarde.</p>`;
+                geminiModal.style.display = 'flex';
             } finally {
                 loadingIndicator.classList.add('hidden');
                 geminiAnalyzeBtn.disabled = false;
             }
-        }
-
-        geminiAnalyzeBtn.addEventListener('click', async () => {
-            let prompt = "";
-            if (linkAbbr1Abb01Broken) {
-                prompt = "A simulação SD-WAN mostra uma falha no link principal entre SIABBR1 e SIABB01. O tráfego dos sites SIMDU01 e SIABB02 está sendo redirecionado para a rota de redundância, passando por SIABBR1 e SIIRS01. O tráfego do SIIRS01 vai direto para a rota de redundância. O tráfego do SIABB01 está sendo encaminhado para SIBRU50. Descreva o impacto dessa falha e as ações tomadas pelo sistema SD-WAN, destacando a estratégia de convergência. Formate a resposta usando Markdown para títulos e listas.";
-            } else if (linkIarrasAbbr1Broken) {
-                prompt = "A simulação SD-WAN mostra uma falha no link entre SIIRS01 e SIABBR1. Apenas o tráfego do site SIIRS01 é roteado para a rota de redundância, que começa na INTERNET TÚNEL VXLAN IPSEC, e de lá segue para SIBRU1E, IPRAN e SIBRU50. Os sites SIMDU01 e SIABB02 continuam a usar a via principal. Descreva o impacto dessa falha e as ações tomadas pelo sistema SD-WAN. Explique os benefícios da comutação seletiva. Formate a resposta usando Markdown para títulos e listas.";
-            } else {
-                prompt = "A simulação SD-WAN está operando sem falhas. Todos os sites (SIMDU01, SIIRS01, SIABB02) estão usando a rota principal. Descreva o cenário ideal de operação SD-WAN e os benefícios de ter uma rota de redundância disponível. Formate a resposta usando Markdown para títulos e listas.";
-            }
-
-            modalText.innerHTML = "Gerando análise...";
-            geminiModal.style.display = 'flex';
-            const analysis = await getGeminiAnalysis(prompt);
-            modalText.innerHTML = analysis.replace(/\n/g, '<br>');
         });
 
+        // Fecha o modal
         closeModalBtn.addEventListener('click', () => {
             geminiModal.style.display = 'none';
         });
 
-        window.addEventListener('click', (event) => {
-            if (event.target == geminiModal) {
-                geminiModal.style.display = 'none';
-            }
-        });
+        // Inicia a aplicação
+        window.onload = function() {
+            resizeCanvas();
+            animate();
+        };
 
-        breakLink2Btn.addEventListener('click', () => {
-            if (!linkAbbr1Abb01Broken) {
-                linkAbbr1Abb01Broken = true;
-                
-                trafficDots = trafficDots.map(dot => ({ ...dot, pos: 0 }));
-                const siabb01Dot = trafficDots.find(dot => dot.id === 'siabb01');
-                if (siabb01Dot) {
-                    siabb01Dot.enabled = true;
-                    siabb01Dot.pos = 0;
-                }
-
-                breakLink1Btn.disabled = true;
-                breakLink2Btn.disabled = true;
-                statusMessage.textContent = 'Link entre SIABBR1 e SIABB01 rompido! Todo o tráfego está convergindo...';
-                
-                setTimeout(() => {
-                    statusMessage.textContent = 'Comutação concluída! Tráfego de todos os sites redirecionado para a rota de redundância.';
-                }, 2000);
-            }
-        });
-
-        breakLink1Btn.addEventListener('click', () => {
-            if (!linkIarrasAbbr1Broken) {
-                linkIarrasAbbr1Broken = true;
-                
-                trafficDots = trafficDots.map(dot => ({ ...dot, pos: 0 }));
-                const siabb01Dot = trafficDots.find(dot => dot.id === 'siabb01');
-                if (siabb01Dot) {
-                    siabb01Dot.enabled = false;
-                }
-                
-                breakLink1Btn.disabled = true;
-                breakLink2Btn.disabled = true;
-                statusMessage.textContent = 'Link entre SIIRS01 e SIABBR1 rompido! Apenas o tráfego de SIIRS01 foi redirecionado...';
-                
-                setTimeout(() => {
-                    statusMessage.textContent = 'Comutação concluída! Apenas o tráfego de SIIRS01 redirecionado para a rota de redundância.';
-                }, 2000);
-            }
-        });
-
-        resetBtn.addEventListener('click', () => {
-            linkAbbr1Abb01Broken = false;
-            linkIarrasAbbr1Broken = false;
-            
-            trafficDots = trafficDots.map(dot => ({ ...dot, pos: 0 }));
-            const siabb01Dot = trafficDots.find(dot => dot.id === 'siabb01');
-            if (siabb01Dot) {
-                siabb01Dot.enabled = false;
-            }
-            
-            breakLink1Btn.disabled = false;
-            breakLink2Btn.disabled = false;
-            statusMessage.textContent = 'Rastreando os caminhos principais dos sites.';
-        });
-
-        statusMessage.textContent = 'Rastreando os caminhos principais dos sites.';
-
-        function animate() {
-            update();
-            render();
-            animationFrameId = requestAnimationFrame(animate);
-        }
     </script>
 </body>
 </html>
