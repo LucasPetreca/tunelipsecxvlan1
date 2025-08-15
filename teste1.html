@@ -316,14 +316,14 @@
         // Define as posições dos dispositivos na tela
         const devices = {
             manduri: { x: 0.2, y: 0.5, label: 'SIMDU01', subLabel: 'MANDURI' },
-            iaras: { x: 0.5, y: 0.75, label: 'SIIRS01', subLabel: 'IARAS' },
+            iaras: { x: 0.5, y: 0.75, label: 'SIIRS01', subLabel: 'ISP LOCAL\nIARAS' },
             aguasDeSantaBarbara: { x: 0.5, y: 0.3, label: 'SIABBR1', subLabel: 'AGUAS DE ST BARBARA' },
             newDevice: { x: 0.7, y: 0.3, label: 'SIABB01', subLabel: 'AGUAS DE ST BARBARA' },
             sibru50: { x: 0.9, y: 0.1, label: 'SIBRU50', subLabel: 'BAURU' },
-            internet: { x: 0.7, y: 0.65, label: 'INTERNET', subLabel: 'TÚNEL VXLAN IPSEC\nFORTIGATE 40F' },
-            sibru1e: { x: 0.9, y: 0.75, label: 'SIBRU1E', subLabel: 'GPON RESID CLARO\n BAURU' },
+            internet: { x: 0.7, y: 0.75, label: 'INTERNET', subLabel: 'TÚNEL VXLAN IPSEC\nFORTIGATE 40F' },
+            sibru1e: { x: 0.9, y: 0.75, label: 'SIBRU1E', subLabel: 'GPON CLARO\n BAURU' },
             ipran: { x: 0.9, y: 0.425, label: 'IPRAN' },
-            siabb02: { x: 0.6, y: 0.45, label: 'SIABB02', subLabel: 'PIRATININGA' },
+            siabb02: { x: 0.6, y: 0.45, label: 'SIABB02' },
             capacidade: { x: (0.7 + 0.9) / 2, y: (0.3 + 0.1) / 2, label: 'CAPACIDADE' }
         };
 
@@ -345,7 +345,7 @@
                 siirs: [devices.iaras, devices.internet, devices.sibru1e, devices.ipran, devices.sibru50],
                 simdu: [devices.manduri, devices.aguasDeSantaBarbara, devices.iaras, devices.internet, devices.sibru1e, devices.ipran, devices.sibru50],
                 siabb02: [devices.siabb02, devices.aguasDeSantaBarbara, devices.iaras, devices.internet, devices.sibru1e, devices.ipran, devices.sibru50],
-                siabb01: [devices.newDevice, devices.internet, devices.sibru1e, devices.ipran, devices.sibru50]
+                siabb01: [devices.newDevice, devices.sibru50]
             },
             failoverSiabb01: {
                 siabb01: [devices.newDevice, devices.sibru50]
@@ -495,11 +495,7 @@
             // Desenha o caminho de failover para SIABB01 quando o link principal está quebrado
             if (linkAbbr1Abb01Broken) {
                 ctx.setLineDash([5, 5]);
-                drawLineWithGradient(
-                    canvas.width * devices.newDevice.x, canvas.height * devices.newDevice.y,
-                    canvas.width * devices.internet.x, canvas.height * devices.internet.y,
-                    colors.redundancy
-                );
+      
                 drawLineWithGradient(
                     canvas.width * devices.internet.x, canvas.height * devices.internet.y,
                     canvas.width * devices.sibru1e.x, canvas.height * devices.sibru1e.y,
