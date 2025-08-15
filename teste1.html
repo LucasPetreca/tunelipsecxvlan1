@@ -43,7 +43,7 @@
         .device-label {
             white-space: pre-wrap;
             text-align: center;
-            font-size: 0.75rem;
+            font-size: 0.95rem;
             line-height: 1rem;
             font-weight: 500;
             color: #e0e0e0;
@@ -53,7 +53,7 @@
         .sub-device-label {
             white-space: pre-wrap;
             text-align: center;
-            font-size: 0.7rem;
+            font-size: 0.95rem;
             line-height: 0.9rem;
             font-weight: 400;
             color: #b0b0b0;
@@ -294,13 +294,13 @@
         };
         
         const devices = {
-            manduri: { x: 0.2, y: 0.5, label: 'SIMDU01' },
-            iaras: { x: 0.4, y: 0.5, label: 'SIIRS01' },
+            manduri: { x: 0.2, y: 0.5, label: 'SIMDU01',sublabel: 'MANDURI'},
+            iaras: { x: 0.5, y: 0.75, label: 'SIIRS01'sublabel: 'IARAS' },
             aguasDeSantaBarbara: { x: 0.5, y: 0.3, label: 'SIABBR1' },
-            newDevice: { x: 0.7, y: 0.3, label: 'SIABB01' }, 
-            sibru50: { x: 0.9, y: 0.1, label: 'SIBRU50' },
-            internet: { x: 0.65, y: 0.625, label: 'INTERNET', subLabel: 'TÚNEL VXLAN IPSEC\nFORTIGATE 40F' },
-            sibru1e: { x: 0.9, y: 0.75, label: 'SIBRU1E', subLabel: 'GPON RESID CLARO\n1G DW / 500 UP' },
+            newDevice: { x: 0.7, y: 0.3, label: 'SIABB01',sublabel: 'AGUAS DE ST BARBARA' }, 
+            sibru50: { x: 0.9, y: 0.1, label: 'SIBRU50',sublabel: 'BAURU' },
+            internet: { x: 0.7, y: 0.65, label: 'INTERNET', subLabel: 'TÚNEL VXLAN IPSEC\nFORTIGATE 40F' },
+            sibru1e: { x: 0.9, y: 0.75, label: 'SIBRU1E', subLabel: 'GPON RESID CLARO\n BAURU' },
             ipran: { x: 0.9, y: 0.425, label: 'IPRAN' },
             siabb02: { x: 0.6, y: 0.45, label: 'SIABB02' },
             capacidade: { x: (0.7 + 0.9) / 2, y: (0.3 + 0.1) / 2, label: 'CAPACIDADE' }
@@ -837,5 +837,7 @@
     </script>
 </body>
 </html>
+
+
 
 
